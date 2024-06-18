@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fehlzeiterfassung für Mitarbeiter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        label {
+            margin-bottom: 5px;
+        }
+        input, select {
+            padding: 5px;
+        }
+        button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Fehlzeiterfassung für Mitarbeiter</h1>
+
+    <h2>Eingabeformular: Mitarbeiter</h2>
+    <form id="mitarbeiterForm">
+        <label for="mitarbeiterID">Mitarbeiter-ID:</label>
+        <input type="text" id="mitarbeiterID" name="mitarbeiterID" required>
+
+        <label for="nachname">Nachname:</label>
+        <input type="text" id="nachname" name="nachname" required>
+
+        <label for="vorname">Vorname:</label>
+        <input type="text" id="vorname" name="vorname" required>
+
+        <label for="geburtsdatum">Geburtsdatum:</label>
+        <input type="date" id="geburtsdatum" name="geburtsdatum" required>
+
+        <label for="arbeitstag">Tagesarbeitszeit:</label>
+        <input type="number" id="arbeitstag" name="arbeitstag" required>
+
+        <button type="submit">Mitarbeiter speichern</button>
+    </form>
+
+    <h2>Eingabeformular: Fehlzeit</h2>
+    <form id="fehlzeitForm">
+        <label for="fehlzeitID">Fehlzeit-ID:</label>
+        <input type="text" id="fehlzeitID" name="fehlzeitID" required>
+
+        <label for="vonDatum">Von Datum:</label>
+        <input type="date" id="vonDatum" name="vonDatum" required>
+
+        <label for="bisDatum">Bis Datum:</label>
+        <input type="date" id="bisDatum" name="bisDatum" required>
+
+        <label for="grund">Grund:</label>
+        <select id="grund" name="grund" required>
+            <option value="krank">Krank</option>
+            <option value="urlaub">Urlaub</option>
+            <option value="weiterbildung">Weiterbildung</option>
+            <option value="dienstreise">Dienstreise</option>
+        </select>
+
+        <button type="submit">Fehlzeit speichern</button>
+    </form>
+
+    <button onclick="clearForms()">Eingabefelder löschen</button>
+</div>
+
+<script>
+    function clearForms() {
+        document.getElementById('mitarbeiterForm').reset();
+        document.getElementById('fehlzeitForm').reset();
+    }
+</script>
+</body>
+</html>
