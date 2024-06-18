@@ -8,30 +8,44 @@
         body {
             font-family: Arial, sans-serif;
         }
+
         .container {
             width: 80%;
             margin: 0 auto;
         }
+
         h1, h2 {
             text-align: center;
         }
+
         form {
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
+
         label {
             margin-bottom: 5px;
         }
+
         input, select {
             padding: 5px;
         }
+
         button {
             padding: 10px;
             background-color: #4CAF50;
             color: white;
             border: none;
             cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .margin-top {
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -40,7 +54,7 @@
     <h1>Fehlzeiterfassung für Mitarbeiter</h1>
 
     <h2>Eingabeformular: Mitarbeiter</h2>
-    <form id="mitarbeiterForm">
+    <form id="mitarbeiterForm" onsubmit="handleSubmit(event, '/saveMitarbeiter')">
         <label for="mitarbeiterID">Mitarbeiter-ID:</label>
         <input type="text" id="mitarbeiterID" name="mitarbeiterID" required>
 
@@ -60,9 +74,9 @@
     </form>
 
     <h2>Eingabeformular: Fehlzeit</h2>
-    <form id="fehlzeitForm">
-        <label for="fehlzeitID">Fehlzeit-ID:</label>
-        <input type="text" id="fehlzeitID" name="fehlzeitID" required>
+    <form id="fehlzeitForm" onsubmit="handleSubmit(event, '/saveFehlzeit')">
+        <label for="mitarbeiterID">Mitarbeiter-ID:</label>
+        <input type="text" id="mitarbeiterID" name="mitarbeiterID" required>
 
         <label for="vonDatum">Von Datum:</label>
         <input type="date" id="vonDatum" name="vonDatum" required>
@@ -81,13 +95,36 @@
         <button type="submit">Fehlzeit speichern</button>
     </form>
 
-    <button onclick="clearForms()">Eingabefelder löschen</button>
+    <button class="margin-top" onclick="clearForms()">Eingabefelder löschen</button>
+    <button class="margin-top" onclick="redirectToList()">Liste</button>
 </div>
 
 <script>
     function clearForms() {
         document.getElementById('mitarbeiterForm').reset();
         document.getElementById('fehlzeitForm').reset();
+    }
+
+    function redirectToList() {
+        window.location.href = '/list';
+    }
+
+    function handleSubmit(event, endpoint) {
+        event.preventDefault();
+        const form = event.target;
+        const formData = new FormData(form);
+
+        fetch(endpoint, {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.text())
+            .then(data => {
+                alert(data);
+            })
+            .catch(error => {
+                alert('Fehler: ' + error.message);
+            });
     }
 </script>
 </body>

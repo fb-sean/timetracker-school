@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste der Mitarbeiter und Fehlzeiten</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        h1, h2 {
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .margin-top {
+            margin-top: 20px;
+        }
+
+        .margin-right {
+            margin-right: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Liste der Mitarbeiter und Fehlzeiten</h1>
+
+    <h2>Mitarbeiter</h2>
+    <table id="mitarbeiterTable">
+        <thead>
+        <tr>
+            <th>Mitarbeiter-ID</th>
+            <th>Nachname</th>
+            <th>Vorname</th>
+            <th>Geburtsdatum</th>
+            <th>Tagesarbeitszeit</th>
+            <th>Home Office</th>
+            <th>Aktion</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <h2>Fehlzeiten</h2>
+    <table id="fehlzeitenTable">
+        <thead>
+        <tr>
+            <th>Fehlzeit-ID</th>
+            <th>Mitarbeiter-ID</th>
+            <th>Von Datum</th>
+            <th>Bis Datum</th>
+            <th>Grund</th>
+            <th>Fehlzeit in Tagen</th>
+            <th>Aktion</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <button class="margin-top" onclick="redirectToHome()">Zurück</button>
+</div>
+
+<script>
+    function redirectToHome() {
+        window.location.href = '/';
+    }
+
+    function toggleHomeOffice(ma_id) {
+        fetch(`/toggleHomeOffice/${ma_id}`, {
+            method: 'POST'
+        })
+            .then(response => response.json())
+            .then(data => {
+                alert(`Mitarbeiter ${ma_id} Home Office Status: ${data.status ? 'Aktiviert' : 'Deaktiviert'}`);
+                location.reload();
+            })
+            .catch(error => {
+                console.error('Fehler beim Umschalten des Home Office Status:', error);
+            });
+    }
+
+    function deleteMitarbeiter(ma_id) {
+        if (confirm('Mitarbeiter wirklich löschen?')) {
+            fetch(`/deleteMitarbeiter/${ma_id}`, {
+                method: 'DELETE'
+            })
+                .then(response => response.text())
+                .then(data => {
+                    alert(data);
+                    location.reload();
+                })
+                .catch(error => {
+                    console.error('Fehler beim Löschen des Mitarbeiters:', error);
+                });
+        }
+    }
+
+    function deleteFehlzeit(fehlzeit_id) {
+        if (confirm('Fehlzeit wirklich löschen?')) {
+            fetch(`/deleteFehlzeit/${fehlzeit_id}`, {
+                method: 'DELETE'
+            })
+                .then(response => response.text())
+                .then(data => {
+                    alert(data);
+                    location.reload();
+                })
+                .catch(error => {
+                    console.error('Fehler beim Löschen der Fehlzeit:', error);
+                });
+        }
+    }
+
+    fetch('/list-fetch')
+        .then(response => response.json())
+        .then(data => {
+            const mitarbeiterTable = document.getElementById('mitarbeiterTable').getElementsByTagName('tbody')[0];
+            const fehlzeitenTable = document.getElementById('fehlzeitenTable').getElementsByTagName('tbody')[0];
+
+            data.mitarbeiter.forEach(mitarbeiter => {
+                const row = mitarbeiterTable.insertRow();
+                row.insertCell(0).textContent = mitarbeiter.MA_ID;
+                row.insertCell(1).textContent = mitarbeiter.Nachname;
+                row.insertCell(2).textContent = mitarbeiter.Vorname;
+                row.insertCell(3).textContent = mitarbeiter.Geb_Datum;
+                row.insertCell(4).textContent = mitarbeiter.Tagesarbeitszeit;
+                row.insertCell(5).textContent = mitarbeiter.HaveHomeOffice ? 'Ja' : 'Nein';
+
+                const actionCell = row.insertCell(6);
+                const toggleButton = document.createElement('button');
+                toggleButton.textContent = 'Toggle Home Office';
+                toggleButton.onclick = () => toggleHomeOffice(mitarbeiter.MA_ID);
+                actionCell.appendChild(toggleButton);
+
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Löschen';
+                deleteButton.onclick = () => deleteMitarbeiter(mitarbeiter.MA_ID);
+                deleteButton.className = 'margin-right';
+                actionCell.appendChild(deleteButton);
+            });
+
+            data.fehlzeiten.forEach(fehlzeit => {
+                const row = fehlzeitenTable.insertRow();
+                row.insertCell(0).textContent = fehlzeit.Fehlzeit_ID;
+                row.insertCell(1).textContent = fehlzeit.Employee_ID;
+                row.insertCell(2).textContent = fehlzeit.From_Date;
+                row.insertCell(3).textContent = fehlzeit.Till_Date;
+                row.insertCell(4).textContent = fehlzeit.Reason;
+                row.insertCell(5).textContent = fehlzeit.MissedDays;
+
+                const actionCell = row.insertCell(6);
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Löschen';
+                deleteButton.onclick = () => deleteFehlzeit(fehlzeit.Fehlzeit_ID);
+                actionCell.appendChild(deleteButton);
+            });
+        })
+        .catch(error => {
+            console.error('Fehler beim Abrufen der Daten:', error);
+        });
+</script>
+</body>
+</html>
