@@ -52,6 +52,14 @@
         .margin-right {
             margin-right: 20px;
         }
+
+        .button-secondary {
+            background-color: #008CBA !important;
+        }
+
+        .button-delete {
+            background-color: #f44336 !important;
+        }
     </style>
 </head>
 <body>
@@ -90,7 +98,7 @@
         <tbody></tbody>
     </table>
 
-    <button class="margin-top" onclick="redirectToHome()">Zurück</button>
+    <button class="margin-top button-secondary" onclick="redirectToHome()">Zurück</button>
 </div>
 
 <script>
@@ -163,12 +171,13 @@
                 const toggleButton = document.createElement('button');
                 toggleButton.textContent = 'Toggle Home Office';
                 toggleButton.onclick = () => toggleHomeOffice(mitarbeiter.MA_ID);
+                toggleButton.className = 'margin-right';
                 actionCell.appendChild(toggleButton);
 
                 const deleteButton = document.createElement('button');
                 deleteButton.textContent = 'Löschen';
                 deleteButton.onclick = () => deleteMitarbeiter(mitarbeiter.MA_ID);
-                deleteButton.className = 'margin-right';
+                deleteButton.className = 'button-delete';
                 actionCell.appendChild(deleteButton);
             });
 

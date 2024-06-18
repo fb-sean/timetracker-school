@@ -1,12 +1,14 @@
 const express = require('express');
 const mysql = require('mysql2');
 const bodyParser = require('body-parser');
+const multer = require('multer');
+const upload = multer();
 const app = express();
 const dotenv = require('dotenv');
 dotenv.config();
 
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(express.static('public'));
+app.use(bodyParser.json());
 
 const db = mysql.createConnection({
     host: 'localhost',
@@ -87,7 +89,7 @@ db.connect((err) => {
     });
 });
 
-app.post('/saveMitarbeiter', (req, res) => {
+app.post('/saveMitarbeiter', upload.none(), (req, res) => {
     const {mitarbeiterID, nachname, vorname, geburtsdatum, arbeitstag} = req.body;
 
     const checkMitarbeiterQuery = 'SELECT * FROM mitarbeiter WHERE MA_ID = ?';
@@ -99,7 +101,7 @@ app.post('/saveMitarbeiter', (req, res) => {
             res.status(400).send('Mitarbeiter-ID existiert bereits.');
         } else {
             const query = 'INSERT INTO mitarbeiter (MA_ID, Nachname, Vorname, Geb_Datum, Tagesarbeitszeit) VALUES (?, ?, ?, ?, ?)';
-            db.query(query, [mitarbeiterID, nachname, vorname, geburtsdatum, arbeitstag], (err) => {
+            db.query(query, [parseInt(mitarbeiterID), nachname, vorname, geburtsdatum, arbeitstag], (err) => {
                 if (err) {
                     console.error('Fehler beim Speichern des Mitarbeiters:', err);
                     res.status(500).send('Fehler beim Speichern des Mitarbeiters.');
@@ -111,11 +113,11 @@ app.post('/saveMitarbeiter', (req, res) => {
     });
 });
 
-app.post('/saveFehlzeit', (req, res) => {
+app.post('/saveFehlzeit', upload.none(), (req, res) => {
     const {mitarbeiterID, vonDatum, bisDatum, grund} = req.body;
 
     const checkMitarbeiterQuery = 'SELECT * FROM mitarbeiter WHERE MA_ID = ?';
-    db.query(checkMitarbeiterQuery, [mitarbeiterID], (err, results) => {
+    db.query(checkMitarbeiterQuery, [parseInt(mitarbeiterID)], (err, results) => {
         if (err) {
             console.error('Fehler beim Überprüfen der Mitarbeiter-ID:', err);
             res.status(500).send('Fehler beim Überprüfen der Mitarbeiter-ID.');

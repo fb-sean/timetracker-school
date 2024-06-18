@@ -47,6 +47,24 @@
         .margin-top {
             margin-top: 20px;
         }
+
+        .button-secondary {
+            background-color: #008CBA !important;
+        }
+
+        .button-delete {
+            background-color: #f44336 !important;
+        }
+
+        .half-width {
+            width: 25%;
+        }
+
+        .centered {
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+        }
     </style>
 </head>
 <body>
@@ -70,7 +88,9 @@
         <label for="arbeitstag">Tagesarbeitszeit:</label>
         <input type="number" id="arbeitstag" name="arbeitstag" required>
 
-        <button type="submit">Mitarbeiter speichern</button>
+        <div class="centered">
+            <button type="submit" class="half-width">Mitarbeiter speichern</button>
+        </div>
     </form>
 
     <h2>Eingabeformular: Fehlzeit</h2>
@@ -92,14 +112,20 @@
             <option value="dienstreise">Dienstreise</option>
         </select>
 
-        <button type="submit">Fehlzeit speichern</button>
+        <div class="centered">
+            <button type="submit" class="half-width">Fehlzeit speichern</button>
+        </div>
     </form>
 
-    <button class="margin-top" onclick="clearForms()">Eingabefelder löschen</button>
-    <button class="margin-top" onclick="redirectToList()">Liste</button>
+    <button class="margin-top button-delete" onclick="clearForms()">Eingabefelder löschen</button>
+    <button class="margin-top button-secondary" onclick="redirectToList()">Liste</button>
 </div>
 
 <script>
+    window.onload = function () {
+        document.getElementById('mitarbeiterID').focus();
+    };
+
     function clearForms() {
         document.getElementById('mitarbeiterForm').reset();
         document.getElementById('fehlzeitForm').reset();
