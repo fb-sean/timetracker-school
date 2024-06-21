@@ -12,8 +12,8 @@ app.use(bodyParser.json());
 
 const db = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
-    password: 'El1xaOVPozdobcUZfiibloafGKAymb0MwjB3GqXxNzGNkK!1' // Update with your environment variable
+    user: '',
+    password: '' // Update with your environment variable
 });
 
 db.connect((err) => {
