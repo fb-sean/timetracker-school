@@ -6,16 +6,26 @@
     <title>Liste der Mitarbeiter und Fehlzeiten</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Helvetica Neue', sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            margin: 0;
+            padding: 0;
         }
 
         .container {
             width: 80%;
-            margin: 0 auto;
+            max-width: 1200px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
         }
 
         h1, h2 {
             text-align: center;
+            color: #0044cc;
         }
 
         table {
@@ -26,7 +36,7 @@
 
         th, td {
             padding: 10px;
-            border: 1px solid #ddd;
+            border: 1px solid #ccc;
         }
 
         th {
@@ -34,15 +44,18 @@
         }
 
         button {
-            padding: 10px;
-            background-color: #4CAF50;
+            padding: 12px 20px;
+            background-color: #0044cc;
             color: white;
             border: none;
+            border-radius: 5px;
             cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
         }
 
         button:hover {
-            background-color: #45a049;
+            background-color: #003399;
         }
 
         .margin-top {
@@ -50,15 +63,21 @@
         }
 
         .margin-right {
-            margin-right: 20px;
+            margin-right: 10px;
         }
 
         .button-secondary {
-            background-color: #008CBA !important;
+            background-color: #999 !important;
         }
 
         .button-delete {
             background-color: #f44336 !important;
+        }
+
+        .centered {
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
     </style>
 </head>
@@ -98,7 +117,9 @@
         <tbody></tbody>
     </table>
 
-    <button class="margin-top button-secondary" onclick="redirectToHome()">Zurück</button>
+    <div class="centered">
+        <button class="margin-top button-secondary" onclick="redirectToHome()">Zurück</button>
+    </div>
 </div>
 
 <script>
@@ -163,9 +184,9 @@
                 row.insertCell(0).textContent = mitarbeiter.MA_ID;
                 row.insertCell(1).textContent = mitarbeiter.Nachname;
                 row.insertCell(2).textContent = mitarbeiter.Vorname;
-                row.insertCell(3).textContent = mitarbeiter.Geb_Datum;
-                row.insertCell(4).textContent = mitarbeiter.Tagesarbeitszeit;
-                row.insertCell(5).textContent = mitarbeiter.HaveHomeOffice ? 'Ja' : 'Nein';
+                row.insertCell(3).textContent = new Date(mitarbeiter.Geb_Datum).toLocaleDateString();
+                row.insertCell(4).textContent = Number(mitarbeiter.Tagesarbeitszeit).toLocaleString();
+                row.insertCell(5).textContent = mitarbeiter.HaveHomeOffice ? '✅' : '❌';
 
                 const actionCell = row.insertCell(6);
                 const toggleButton = document.createElement('button');
@@ -185,8 +206,8 @@
                 const row = fehlzeitenTable.insertRow();
                 row.insertCell(0).textContent = fehlzeit.Fehlzeit_ID;
                 row.insertCell(1).textContent = fehlzeit.Employee_ID;
-                row.insertCell(2).textContent = fehlzeit.From_Date;
-                row.insertCell(3).textContent = fehlzeit.Till_Date;
+                row.insertCell(2).textContent = new Date(fehlzeit.From_Date).toLocaleDateString();
+                row.insertCell(3).textContent = new Date(fehlzeit.Till_Date).toLocaleDateString();
                 row.insertCell(4).textContent = fehlzeit.Reason;
                 row.insertCell(5).textContent = fehlzeit.MissedDays;
 

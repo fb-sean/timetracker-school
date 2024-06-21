@@ -6,42 +6,59 @@
     <title>Fehlzeiterfassung für Mitarbeiter</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Helvetica Neue', sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            margin: 0;
+            padding: 0;
         }
 
         .container {
             width: 80%;
-            margin: 0 auto;
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
         }
 
         h1, h2 {
             text-align: center;
+            color: #0044cc;
         }
 
         form {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 15px;
         }
 
         label {
             margin-bottom: 5px;
+            font-weight: bold;
         }
 
         input, select {
-            padding: 5px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
         }
 
         button {
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
+            padding: 12px 20px;
+            background-color: #0044cc;
+            color: #fff;
             border: none;
+            border-radius: 5px;
             cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
         }
 
         button:hover {
-            background-color: #45a049;
+            background-color: #003399;
         }
 
         .margin-top {
@@ -49,7 +66,7 @@
         }
 
         .button-secondary {
-            background-color: #008CBA !important;
+            background-color: #999 !important;
         }
 
         .button-delete {
@@ -57,13 +74,18 @@
         }
 
         .half-width {
-            width: 25%;
+            width: 50%;
+            margin: 0 auto;
         }
 
         .centered {
-            text-align: center;
+            display: flex;
             justify-content: center;
             align-items: center;
+        }
+
+        .margin-left {
+            margin-left: 10px;
         }
     </style>
 </head>
@@ -117,8 +139,10 @@
         </div>
     </form>
 
-    <button class="margin-top button-delete" onclick="clearForms()">Eingabefelder löschen</button>
-    <button class="margin-top button-secondary" onclick="redirectToList()">Liste</button>
+    <div class="centered">
+        <button class="margin-top button-delete" onclick="clearForms()">Eingabefelder löschen</button>
+        <button class="margin-top margin-left button-secondary" onclick="redirectToList()">Liste</button>
+    </div>
 </div>
 
 <script>

@@ -12,8 +12,8 @@ app.use(bodyParser.json());
 
 const db = mysql.createConnection({
     host: 'localhost',
-    user: '',
-    password: '' // Update with your environment variable
+    user: 'root',
+    password: 'El1xaOVPozdobcUZfiibloafGKAymb0MwjB3GqXxNzGNkK!1' // Update with your environment variable
 });
 
 db.connect((err) => {
@@ -172,7 +172,7 @@ app.post('/toggleHomeOffice/:id', (req, res) => {
             res.status(500).send('Fehler beim Überprüfen des Home Office Status.');
         } else {
             const currentStatus = results.length > 0 ? results[0].HaveHomeOffice : false;
-            const newStatus = !currentStatus;
+            const newStatus = !!!currentStatus;
             const updateHomeOfficeQuery = results.length > 0 ?
                 'UPDATE HomeOffice SET HaveHomeOffice = ? WHERE MA_ID = ?' :
                 'INSERT INTO HomeOffice (HaveHomeOffice, MA_ID) VALUES (?, ?)';
